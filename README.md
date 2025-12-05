@@ -56,9 +56,6 @@ All endpoints prefixed with `/api`
 - `birthdate`: Date (ISO)
 - `zodiac`: String (calculated)
 - `horoscope`: String (calculated)
-- etc.  
-Zodiac/horoscope calculation follows [this spreadsheet](https://docs.google.com/spreadsheets/d/1Oahej8yuEHfDsQI-AwycEpQ0CnjkMsxOMg2ywMKnjsg/edit#gid=1538893505)
-
 ---
 
 ### **Chat & Notification**
