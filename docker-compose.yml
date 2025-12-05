@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:5
+    container_name: youapp_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - youapp_network
+
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: youapp_rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - youapp_network
+
+  # NestJS API
+  api:
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    container_name: youapp_api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/youapp
+      - JWT_SECRET=MY_SUPER_SECRET_KEY_2025
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    depends_on:
+      - mongodb
+      - rabbitmq
+    networks:
+      - youapp_network
+
+volumes:
+  mongodb_data:
+
+networks:
+  youapp_network:
+    driver: bridge
